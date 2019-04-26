@@ -8,7 +8,10 @@ export class MainMenu extends LScene {
     constructor(engine: Engine) {
         super(engine);
 
-        new UIButton("Play", engine.halfCanvasWidth, engine.halfCanvasHeight, 200, this, engine);
+        new UIButton("Play", engine.halfCanvasWidth, engine.halfCanvasHeight, 200, this, engine, () => {
+            console.log('LETS PLAY DIS GAME!!');
+            engine.goToScene('game');
+        });
         new UIButton("Credits", engine.halfCanvasWidth, engine.halfCanvasHeight + 100, 400, this, engine);
         new UICursor(engine, this);
     }

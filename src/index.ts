@@ -3,6 +3,7 @@ import { Resources } from './resources';
 import {UIButton} from "./ui/uibutton";
 import {UICursor} from "./ui/cursor";
 import {MainMenu} from "./scenes/mainmenu";
+import {GameScene} from "./scenes/game";
 
 class Game extends Engine {
   constructor() {
@@ -25,6 +26,7 @@ loader.suppressPlayButton = true;
 
 game.start(loader).then(() => {
     game.addScene('main', new MainMenu(game));
+    game.addScene('game', new GameScene(game));
 
     game.goToScene('main');
 });

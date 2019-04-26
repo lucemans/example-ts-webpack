@@ -1,6 +1,7 @@
 import {Actor, Color, Engine, FontUnit, Label, Scene, Sprite, TextAlign, Vector} from "excalibur";
 import {Resources} from "../resources";
 import {LLabel} from "./llabel";
+import {futimes} from "fs";
 
 export class UIButton {
 
@@ -12,10 +13,16 @@ export class UIButton {
     private cwidth = 0;
     private cheight = 0;
 
-    constructor(name: string, x: number, y:number, width: number, scene: Scene, game: Engine) {
+    private callback = () => {};
+
+    constructor(name: string, x: number, y:number, width: number, scene: Scene, game: Engine, callback = null) {
         const uibutton = this;
         let height = 290*this.scaleFactor;
         this.scene = scene;
+        this.cwidth = width;
+        this.cheight = height;
+        if (callback)
+            this.callback = callback;
 
         this.label = new LLabel(name, x, y);
         this.label.fontSize = 24;
@@ -61,6 +68,9 @@ export class UIButton {
         // Click Event
         game.input.pointers.primary.on('down', function(ev) {
             //console.log(uibutton.isOnChar(ev['worldPos'].x, ev['worldPos'].y));
+            if (uibutton.isOnChar(ev['worldPos'].x, ev['worldPos'].y)) {
+                uibutton.callback();
+            }
         });
 
         // Add To Scene
@@ -69,13 +79,13 @@ export class UIButton {
     }
 
     isOnChar(x: number, y:number) {
-        let xx = this.actor.x - this.actor.getWidth()*this.scaleFactor/2;
-        let yy = this.actor.y - this.actor.getHeight()*this.scaleFactor/2;
-        let w = this.actor.getWidth() * this.scaleFactor;
-        let h = this.actor.getHeight() * this.scaleFactor;
+        let xx = this.actor.x - this.cwidth / 2; //this.actor.x - this.actor.getWidth()*this.scaleFactor/2;
+        let yy = this.actor.y - this.cheight / 2; //this.actor.y - this.actor.getHeight()*this.scaleFactor/2;
+        let w = this.cwidth; //this.actor.getWidth() * this.scaleFactor;
+        let h = this.cheight; //this.actor.getHeight() * this.scaleFactor;
 
         return (xx < x && xx + w > x &&
-        yy < y && yy + h > yy);
+        yy < y && yy + h > y);
     }
 
     clicked() {
