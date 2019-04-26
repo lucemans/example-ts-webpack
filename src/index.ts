@@ -2,6 +2,7 @@ import {DisplayMode, Engine, Loader} from 'excalibur';
 import { Resources } from './resources';
 import {UIButton} from "./ui/uibutton";
 import {UICursor} from "./ui/cursor";
+import {MainMenu} from "./scenes/mainmenu";
 
 class Game extends Engine {
   constructor() {
@@ -23,9 +24,9 @@ for (let key in Resources) {
 loader.suppressPlayButton = true;
 
 game.start(loader).then(() => {
-    let button = new UIButton("Play", game.halfCanvasWidth, game.halfCanvasHeight, 200, game.currentScene, game);
-    new UIButton("Credits", game.halfCanvasWidth, game.halfCanvasHeight + 100, 400, game.currentScene, game);
-    let cursor = new UICursor(game, game.currentScene);
+    game.addScene('main', new MainMenu(game));
+
+    game.goToScene('main');
 });
 
 let elem = document.createElement('style');
